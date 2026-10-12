@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+
+namespace Student_Information_System
+{
+    public partial class StudentRecords : Form
+    {
+        public StudentRecords()
+        {
+            InitializeComponent();
+        }
+
+        private void lblHeader_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
