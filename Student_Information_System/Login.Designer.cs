@@ -1,6 +1,6 @@
 ﻿namespace Student_Information_System
 {
-    partial class Login
+    partial class LoginForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -33,13 +33,15 @@
             btnCancel = new Button();
             btnLogin = new Button();
             txtUsername = new TextBox();
-            textBox2 = new TextBox();
+            txtPassword = new TextBox();
             lblUsername = new Label();
             lblPassword = new Label();
-            checkBox1 = new CheckBox();
+            chkShowPassword = new CheckBox();
             label1 = new Label();
-            linkLabel1 = new LinkLabel();
+            lnkSignup = new LinkLabel();
+            pnlLogin = new Panel();
             panel1.SuspendLayout();
+            pnlLogin.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -65,7 +67,7 @@
             // btnCancel
             // 
             btnCancel.BackColor = Color.Red;
-            btnCancel.Location = new Point(89, 288);
+            btnCancel.Location = new Point(79, 200);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(0, 0);
             btnCancel.TabIndex = 1;
@@ -75,9 +77,9 @@
             // btnLogin
             // 
             btnLogin.BackColor = Color.FromArgb(28, 117, 222);
-            btnLogin.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLogin.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnLogin.ImageAlign = ContentAlignment.TopCenter;
-            btnLogin.Location = new Point(43, 326);
+            btnLogin.Location = new Point(33, 238);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(346, 42);
             btnLogin.TabIndex = 2;
@@ -88,26 +90,26 @@
             // txtUsername
             // 
             txtUsername.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtUsername.Location = new Point(43, 132);
+            txtUsername.Location = new Point(33, 44);
             txtUsername.Name = "txtUsername";
             txtUsername.Size = new Size(346, 31);
             txtUsername.TabIndex = 3;
             txtUsername.TextChanged += txtUsername_TextChanged;
             // 
-            // textBox2
+            // txtPassword
             // 
-            textBox2.Location = new Point(43, 231);
-            textBox2.Name = "textBox2";
-            textBox2.PasswordChar = '*';
-            textBox2.Size = new Size(346, 30);
-            textBox2.TabIndex = 4;
+            txtPassword.Location = new Point(33, 143);
+            txtPassword.Name = "txtPassword";
+            txtPassword.Size = new Size(346, 32);
+            txtPassword.TabIndex = 4;
+            txtPassword.UseSystemPasswordChar = true;
             // 
             // lblUsername
             // 
             lblUsername.AutoSize = true;
-            lblUsername.Location = new Point(43, 106);
+            lblUsername.Location = new Point(33, 18);
             lblUsername.Name = "lblUsername";
-            lblUsername.Size = new Size(91, 23);
+            lblUsername.Size = new Size(101, 25);
             lblUsername.TabIndex = 5;
             lblUsername.Text = "Username:";
             lblUsername.Click += label1_Click;
@@ -115,66 +117,78 @@
             // lblPassword
             // 
             lblPassword.AutoSize = true;
-            lblPassword.Location = new Point(43, 205);
+            lblPassword.Location = new Point(33, 117);
             lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(84, 23);
+            lblPassword.Size = new Size(95, 25);
             lblPassword.TabIndex = 6;
             lblPassword.Text = "Password:";
             // 
-            // checkBox1
+            // chkShowPassword
             // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(43, 276);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(149, 27);
-            checkBox1.TabIndex = 7;
-            checkBox1.Text = "Show password";
-            checkBox1.UseVisualStyleBackColor = true;
+            chkShowPassword.AutoSize = true;
+            chkShowPassword.Location = new Point(33, 188);
+            chkShowPassword.Name = "chkShowPassword";
+            chkShowPassword.Size = new Size(165, 29);
+            chkShowPassword.TabIndex = 7;
+            chkShowPassword.Text = "Show password";
+            chkShowPassword.UseVisualStyleBackColor = true;
+            chkShowPassword.CheckedChanged += chkShowPassword_CheckedChanged;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(109, 376);
+            label1.Location = new Point(99, 288);
             label1.Name = "label1";
-            label1.Size = new Size(191, 23);
+            label1.Size = new Size(209, 25);
             label1.TabIndex = 8;
             label1.Text = "Don't have an account?";
             label1.Click += label1_Click;
             // 
-            // linkLabel1
+            // lnkSignup
             // 
-            linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(162, 402);
-            linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(70, 23);
-            linkLabel1.TabIndex = 9;
-            linkLabel1.TabStop = true;
-            linkLabel1.Text = "Sign Up";
-            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
+            lnkSignup.AutoSize = true;
+            lnkSignup.Location = new Point(152, 314);
+            lnkSignup.Name = "lnkSignup";
+            lnkSignup.Size = new Size(78, 25);
+            lnkSignup.TabIndex = 9;
+            lnkSignup.TabStop = true;
+            lnkSignup.Text = "Sign Up";
+            lnkSignup.LinkClicked += lnkSignup_LinkClicked;
             // 
-            // Login
+            // pnlLogin
+            // 
+            pnlLogin.BackColor = SystemColors.Menu;
+            pnlLogin.Controls.Add(txtUsername);
+            pnlLogin.Controls.Add(lnkSignup);
+            pnlLogin.Controls.Add(btnCancel);
+            pnlLogin.Controls.Add(label1);
+            pnlLogin.Controls.Add(btnLogin);
+            pnlLogin.Controls.Add(chkShowPassword);
+            pnlLogin.Controls.Add(txtPassword);
+            pnlLogin.Controls.Add(lblPassword);
+            pnlLogin.Controls.Add(lblUsername);
+            pnlLogin.Font = new Font("Segoe UI", 11F);
+            pnlLogin.Location = new Point(4, 81);
+            pnlLogin.Name = "pnlLogin";
+            pnlLogin.Size = new Size(425, 368);
+            pnlLogin.TabIndex = 10;
+            // 
+            // LoginForm
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Window;
             ClientSize = new Size(432, 453);
-            Controls.Add(linkLabel1);
-            Controls.Add(label1);
-            Controls.Add(checkBox1);
-            Controls.Add(lblPassword);
-            Controls.Add(lblUsername);
-            Controls.Add(textBox2);
-            Controls.Add(txtUsername);
-            Controls.Add(btnLogin);
-            Controls.Add(btnCancel);
+            Controls.Add(pnlLogin);
             Controls.Add(panel1);
             Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Name = "Login";
+            Name = "LoginForm";
             Text = "Login";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            pnlLogin.ResumeLayout(false);
+            pnlLogin.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -184,11 +198,12 @@
         private Button btnCancel;
         private Button btnLogin;
         private TextBox txtUsername;
-        private TextBox textBox2;
+        private TextBox txtPassword;
         private Label lblUsername;
         private Label lblPassword;
-        private CheckBox checkBox1;
+        private CheckBox chkShowPassword;
         private Label label1;
-        private LinkLabel linkLabel1;
+        private LinkLabel lnkSignup;
+        private Panel pnlLogin;
     }
 }

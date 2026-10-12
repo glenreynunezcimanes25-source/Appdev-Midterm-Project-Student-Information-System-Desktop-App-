@@ -4,7 +4,7 @@
     <Compile Update="Login.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Signup.cs">
+    <Compile Update="SignUp.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="StudentRecords.cs">

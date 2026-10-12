@@ -1,8 +1,8 @@
 namespace Student_Information_System
 {
-    public partial class Login : Form
+    public partial class LoginForm : Form
     {
-        public Login()
+        public LoginForm()
         {
             InitializeComponent();
         }
@@ -22,14 +22,23 @@ namespace Student_Information_System
 
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void lnkSignup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            SignUpForm signup = new SignUpForm();
+            signup.FormClosed += (s, args) => this.Show();
 
+            this.Hide();
+            signup.Show();
         }
 
         private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void chkShowPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            txtPassword.UseSystemPasswordChar = !chkShowPassword.Checked;
         }
     }
 }

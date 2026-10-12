@@ -28,6 +28,6 @@ C:\Users\Win11\Desktop\Appdev-Midterm-Project-Student-Information-System-Desktop
 C:\Users\Win11\Desktop\Appdev-Midterm-Project-Student-Information-System-Desktop-App-\Student_Information_System\bin\Debug\net10.0-windows\runtimes\win-x64\native\krb5_64.dll
 C:\Users\Win11\Desktop\Appdev-Midterm-Project-Student-Information-System-Desktop-App-\Student_Information_System\bin\Debug\net10.0-windows\runtimes\win-x64\native\krbcc64.dll
 C:\Users\Win11\Desktop\Appdev-Midterm-Project-Student-Information-System-Desktop-App-\Student_Information_System\obj\Debug\net10.0-windows\Student_Information_System.csproj.AssemblyReference.cache
-C:\Users\Win11\Desktop\Appdev-Midterm-Project-Student-Information-System-Desktop-App-\Student_Information_System\obj\Debug\net10.0-windows\Student_Information_System.Login.resources
-C:\Users\Win11\Desktop\Appdev-Midterm-Project-Student-Information-System-Desktop-App-\Student_Information_System\obj\Debug\net10.0-windows\Student_Information_System.Signup.resources
 C:\Users\Win11\Desktop\Appdev-Midterm-Project-Student-Information-System-Desktop-App-\Student_Information_System\obj\Debug\net10.0-windows\Student_Information_System.StudentRecords.resources
+C:\Users\Win11\Desktop\Appdev-Midterm-Project-Student-Information-System-Desktop-App-\Student_Information_System\obj\Debug\net10.0-windows\Student_Information_System.SignUpForm.resources
+C:\Users\Win11\Desktop\Appdev-Midterm-Project-Student-Information-System-Desktop-App-\Student_Information_System\obj\Debug\net10.0-windows\Student_Information_System.LoginForm.resources
