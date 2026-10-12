@@ -14,5 +14,17 @@ namespace Student_Information_System
         {
             InitializeComponent();
         }
+        private void lnkLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LoginForm login = new LoginForm();
+            login.Show();
+            this.Hide();
+        }
+
+        private void chkShow_CheckedChanged(object sender, EventArgs e)
+        {
+            txtSignUpPass.UseSystemPasswordChar = !chkShow.Checked;
+            txtConfirmpass.UseSystemPasswordChar = !chkShow.Checked;
+        }
     }
 }
