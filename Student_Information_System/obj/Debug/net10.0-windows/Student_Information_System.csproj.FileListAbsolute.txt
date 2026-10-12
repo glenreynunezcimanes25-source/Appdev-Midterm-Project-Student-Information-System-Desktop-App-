@@ -31,3 +31,4 @@ C:\Users\Win11\Desktop\Appdev-Midterm-Project-Student-Information-System-Desktop
 C:\Users\Win11\Desktop\Appdev-Midterm-Project-Student-Information-System-Desktop-App-\Student_Information_System\obj\Debug\net10.0-windows\Student_Information_System.StudentRecords.resources
 C:\Users\Win11\Desktop\Appdev-Midterm-Project-Student-Information-System-Desktop-App-\Student_Information_System\obj\Debug\net10.0-windows\Student_Information_System.SignUpForm.resources
 C:\Users\Win11\Desktop\Appdev-Midterm-Project-Student-Information-System-Desktop-App-\Student_Information_System\obj\Debug\net10.0-windows\Student_Information_System.LoginForm.resources
+C:\Users\Win11\Desktop\Appdev-Midterm-Project-Student-Information-System-Desktop-App-\Student_Information_System\obj\Debug\net10.0-windows\Student_Information_System.Properties.Resources.resources

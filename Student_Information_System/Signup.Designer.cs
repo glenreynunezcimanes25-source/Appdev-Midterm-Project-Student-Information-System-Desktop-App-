@@ -88,7 +88,7 @@
             // lnkLogin
             // 
             lnkLogin.AutoSize = true;
-            lnkLogin.Location = new Point(166, 418);
+            lnkLogin.Location = new Point(168, 416);
             lnkLogin.Name = "lnkLogin";
             lnkLogin.Size = new Size(59, 25);
             lnkLogin.TabIndex = 15;
