@@ -30,14 +30,57 @@ namespace Student_Information_System
 
         }
 
+
         private void ProfileMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (ProfileMenu.SelectedItem == null)
+                return;
 
+            string selectedOption = ProfileMenu.SelectedItem.ToString() ?? "";
+
+            switch (selectedOption)
+            {
+                case "Edit profile":
+                    MessageBox.Show(
+                        "Profile feature is not implemented yet.",
+                        "Information",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                    break;
+
+                case "View students":
+                    MessageBox.Show(
+                        "View Students feature is not implemented yet.",
+                        "Information",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                    break;
+
+                case "Logout":
+                    DialogResult result = MessageBox.Show(
+                        "Are you sure you want to log out?",
+                        "Confirm Logout",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question
+                    );
+
+                    if (result == DialogResult.Yes)
+                    {
+                        this.Hide();
+
+                        LoginForm login = new LoginForm();
+                        login.Show();
+                    }
+                    break;
+            }
+
+            ProfileMenu.SelectedIndex = -1;
         }
 
         private void btnProfileMenu_Click(object sender, EventArgs e)
         {
-            // Open the ComboBox drop-down instead of calling a non-existent Show overload.
             ProfileMenu.Focus();
             ProfileMenu.DroppedDown = true;
         }
@@ -66,6 +109,21 @@ namespace Student_Information_System
         }
 
         private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblSearch_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

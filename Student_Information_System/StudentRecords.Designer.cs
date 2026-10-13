@@ -40,6 +40,7 @@
             lblHeader = new Label();
             imageList1 = new ImageList(components);
             panel3 = new Panel();
+            txtCourse = new TextBox();
             pictureBox2 = new PictureBox();
             btnUpdate = new Button();
             btnDelete = new Button();
@@ -47,18 +48,33 @@
             btnClear = new Button();
             btnSave = new Button();
             label7 = new Label();
-            txtCourse = new TextBox();
             txtFullName = new TextBox();
             comboBox1 = new ComboBox();
             label6 = new Label();
             label5 = new Label();
             label2 = new Label();
             label3 = new Label();
+            panel2 = new Panel();
+            lblTotalStudents = new Label();
+            label4 = new Label();
+            pictureBox3 = new PictureBox();
+            btnSearch = new Button();
+            txtSearch = new TextBox();
+            dgvStudentData = new DataGridView();
+            Id = new DataGridViewTextBoxColumn();
+            FullName = new DataGridViewTextBoxColumn();
+            Course = new DataGridViewTextBoxColumn();
+            YearLevel = new DataGridViewTextBoxColumn();
+            mySqlCommand1 = new MySql.Data.MySqlClient.MySqlCommand();
+            label8 = new Label();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Profilebox).BeginInit();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvStudentData).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -71,17 +87,16 @@
             panel1.Controls.Add(Profilebox);
             panel1.Controls.Add(lblSubheader);
             panel1.Controls.Add(lblHeader);
-            panel1.Location = new Point(-1, -2);
+            panel1.Location = new Point(5, -2);
             panel1.Name = "panel1";
             panel1.Size = new Size(1366, 152);
             panel1.TabIndex = 0;
             // 
             // btnProfileMenu
             // 
-            btnProfileMenu.BackgroundImageLayout = ImageLayout.None;
             btnProfileMenu.FlatStyle = FlatStyle.Flat;
             btnProfileMenu.ForeColor = Color.Black;
-            btnProfileMenu.Location = new Point(1286, 52);
+            btnProfileMenu.Location = new Point(1288, 52);
             btnProfileMenu.Name = "btnProfileMenu";
             btnProfileMenu.Size = new Size(30, 31);
             btnProfileMenu.TabIndex = 7;
@@ -92,7 +107,7 @@
             // pictureBox1
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(15, 34);
+            pictureBox1.Location = new Point(25, 44);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(72, 62);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -108,7 +123,7 @@
             ProfileMenu.FlatStyle = FlatStyle.Flat;
             ProfileMenu.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             ProfileMenu.FormattingEnabled = true;
-            ProfileMenu.Items.AddRange(new object[] { "Edit profile", "Menu", "View students", "Logout" });
+            ProfileMenu.Items.AddRange(new object[] { "Edit profile", "View students", "Logout" });
             ProfileMenu.Location = new Point(1288, 52);
             ProfileMenu.Margin = new Padding(0);
             ProfileMenu.Name = "ProfileMenu";
@@ -143,7 +158,7 @@
             lblSubheader.AutoSize = true;
             lblSubheader.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblSubheader.ForeColor = SystemColors.ButtonFace;
-            lblSubheader.Location = new Point(141, 71);
+            lblSubheader.Location = new Point(151, 81);
             lblSubheader.Name = "lblSubheader";
             lblSubheader.Size = new Size(344, 38);
             lblSubheader.TabIndex = 1;
@@ -154,7 +169,7 @@
             lblHeader.AutoSize = true;
             lblHeader.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblHeader.ForeColor = SystemColors.ButtonFace;
-            lblHeader.Location = new Point(93, 27);
+            lblHeader.Location = new Point(103, 37);
             lblHeader.Name = "lblHeader";
             lblHeader.Size = new Size(511, 50);
             lblHeader.TabIndex = 0;
@@ -169,7 +184,8 @@
             // 
             // panel3
             // 
-            panel3.BackColor = SystemColors.Control;
+            panel3.BackColor = SystemColors.ButtonHighlight;
+            panel3.Controls.Add(txtCourse);
             panel3.Controls.Add(pictureBox2);
             panel3.Controls.Add(btnUpdate);
             panel3.Controls.Add(btnDelete);
@@ -177,18 +193,24 @@
             panel3.Controls.Add(btnClear);
             panel3.Controls.Add(btnSave);
             panel3.Controls.Add(label7);
-            panel3.Controls.Add(txtCourse);
             panel3.Controls.Add(txtFullName);
             panel3.Controls.Add(comboBox1);
             panel3.Controls.Add(label6);
             panel3.Controls.Add(label5);
             panel3.Controls.Add(label2);
             panel3.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            panel3.Location = new Point(57, 239);
+            panel3.Location = new Point(49, 274);
             panel3.Name = "panel3";
             panel3.Size = new Size(446, 528);
             panel3.TabIndex = 3;
             panel3.Paint += panel3_Paint;
+            // 
+            // txtCourse
+            // 
+            txtCourse.Location = new Point(26, 264);
+            txtCourse.Name = "txtCourse";
+            txtCourse.Size = new Size(358, 31);
+            txtCourse.TabIndex = 14;
             // 
             // pictureBox2
             // 
@@ -268,14 +290,6 @@
             label7.TabIndex = 6;
             label7.Text = "Year Level";
             // 
-            // txtCourse
-            // 
-            txtCourse.Location = new Point(26, 264);
-            txtCourse.Name = "txtCourse";
-            txtCourse.Size = new Size(358, 31);
-            txtCourse.TabIndex = 5;
-            txtCourse.TextChanged += textCourse_TextChanged;
-            // 
             // txtFullName
             // 
             txtFullName.Location = new Point(26, 165);
@@ -287,6 +301,7 @@
             // comboBox1
             // 
             comboBox1.FormattingEnabled = true;
+            comboBox1.Items.AddRange(new object[] { "1st Year", "2nd Year", "3rd Year", "4th Year" });
             comboBox1.Location = new Point(26, 364);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(358, 33);
@@ -335,13 +350,135 @@
             label3.Text = "Welcome back";
             label3.Click += label3_Click;
             // 
+            // panel2
+            // 
+            panel2.BackColor = SystemColors.ButtonHighlight;
+            panel2.Controls.Add(lblTotalStudents);
+            panel2.Controls.Add(label4);
+            panel2.Controls.Add(pictureBox3);
+            panel2.Controls.Add(btnSearch);
+            panel2.Controls.Add(txtSearch);
+            panel2.Controls.Add(dgvStudentData);
+            panel2.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            panel2.Location = new Point(532, 274);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(830, 528);
+            panel2.TabIndex = 5;
+            // 
+            // lblTotalStudents
+            // 
+            lblTotalStudents.BackColor = SystemColors.Control;
+            lblTotalStudents.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblTotalStudents.Location = new Point(725, 88);
+            lblTotalStudents.Name = "lblTotalStudents";
+            lblTotalStudents.Size = new Size(79, 31);
+            lblTotalStudents.TabIndex = 6;
+            lblTotalStudents.Text = "Total:";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.BackColor = Color.White;
+            label4.Font = new Font("Segoe UI", 15.2000008F, FontStyle.Bold);
+            label4.Location = new Point(102, 26);
+            label4.Name = "label4";
+            label4.Size = new Size(213, 36);
+            label4.TabIndex = 5;
+            label4.Text = "Student Records";
+            // 
+            // pictureBox3
+            // 
+            pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
+            pictureBox3.Location = new Point(19, 15);
+            pictureBox3.Name = "pictureBox3";
+            pictureBox3.Size = new Size(77, 52);
+            pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox3.TabIndex = 4;
+            pictureBox3.TabStop = false;
+            // 
+            // btnSearch
+            // 
+            btnSearch.Location = new Point(19, 89);
+            btnSearch.Name = "btnSearch";
+            btnSearch.Size = new Size(87, 31);
+            btnSearch.TabIndex = 3;
+            btnSearch.Text = "Search:";
+            btnSearch.UseVisualStyleBackColor = true;
+            // 
+            // txtSearch
+            // 
+            txtSearch.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtSearch.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtSearch.Location = new Point(112, 89);
+            txtSearch.Name = "txtSearch";
+            txtSearch.PlaceholderText = "Search by name, course, or ID...";
+            txtSearch.Size = new Size(607, 31);
+            txtSearch.TabIndex = 1;
+            txtSearch.TextChanged += textBox1_TextChanged;
+            // 
+            // dgvStudentData
+            // 
+            dgvStudentData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvStudentData.BackgroundColor = SystemColors.ActiveCaption;
+            dgvStudentData.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvStudentData.Columns.AddRange(new DataGridViewColumn[] { Id, FullName, Course, YearLevel });
+            dgvStudentData.GridColor = SystemColors.HotTrack;
+            dgvStudentData.Location = new Point(19, 137);
+            dgvStudentData.Name = "dgvStudentData";
+            dgvStudentData.RowHeadersWidth = 51;
+            dgvStudentData.Size = new Size(789, 375);
+            dgvStudentData.TabIndex = 0;
+            // 
+            // Id
+            // 
+            Id.HeaderText = "ID";
+            Id.MinimumWidth = 6;
+            Id.Name = "Id";
+            // 
+            // FullName
+            // 
+            FullName.HeaderText = "Full name";
+            FullName.MinimumWidth = 6;
+            FullName.Name = "FullName";
+            // 
+            // Course
+            // 
+            Course.HeaderText = "Course";
+            Course.MinimumWidth = 6;
+            Course.Name = "Course";
+            // 
+            // YearLevel
+            // 
+            YearLevel.HeaderText = "Year Level";
+            YearLevel.MinimumWidth = 6;
+            YearLevel.Name = "YearLevel";
+            // 
+            // mySqlCommand1
+            // 
+            mySqlCommand1.CacheAge = 0;
+            mySqlCommand1.Connection = null;
+            mySqlCommand1.EnableCaching = false;
+            mySqlCommand1.Transaction = null;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI", 11F);
+            label8.Location = new Point(40, 219);
+            label8.Name = "label8";
+            label8.Size = new Size(487, 25);
+            label8.TabIndex = 6;
+            label8.Text = "Manage, add, update, and view students all in one place.";
+            // 
             // StudentRecords
             // 
             AutoScaleDimensions = new SizeF(120F, 120F);
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoScroll = true;
             BackColor = Color.FromArgb(246, 249, 253);
-            ClientSize = new Size(1374, 894);
+            ClientSize = new Size(1374, 874);
+            Controls.Add(label8);
+            Controls.Add(panel2);
             Controls.Add(label3);
             Controls.Add(panel3);
             Controls.Add(panel1);
@@ -357,6 +494,10 @@
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvStudentData).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -380,12 +521,25 @@
         private Label label6;
         private Label label5;
         private Label label7;
-        private TextBox txtCourse;
         private Button btnClear;
         private Button btnSave;
         private Button btnUpdate;
         private Button btnDelete;
         private Button btnAdd;
         private PictureBox pictureBox2;
+        private Panel panel2;
+        private DataGridView dgvStudentData;
+        private DataGridViewTextBoxColumn Id;
+        private DataGridViewTextBoxColumn FullName;
+        private DataGridViewTextBoxColumn Course;
+        private DataGridViewTextBoxColumn YearLevel;
+        private TextBox txtSearch;
+        private Button btnSearch;
+        private Label label4;
+        private PictureBox pictureBox3;
+        private MySql.Data.MySqlClient.MySqlCommand mySqlCommand1;
+        private Label lblTotalStudents;
+        private Label label8;
+        private TextBox txtCourse;
     }
 }
