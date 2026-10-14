@@ -116,6 +116,8 @@
             btnCreateAccount.TabIndex = 13;
             btnCreateAccount.Text = "Signup";
             btnCreateAccount.UseVisualStyleBackColor = false;
+            btnCreateAccount.Click += btnSignup_Click;
+
             // 
             // chkShow
             // 

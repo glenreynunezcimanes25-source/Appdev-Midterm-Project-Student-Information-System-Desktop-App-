@@ -1,131 +1,92 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace Student_Information_System
 {
     public partial class StudentRecords : Form
     {
-        public StudentRecords()
+        private DatabaseConnection db = new DatabaseConnection();
+       
+        private int currentLoggedInUserId;
+
+        public StudentRecords(int userId)
         {
             InitializeComponent();
+            this.currentLoggedInUserId = userId;
+            LoadStudentData();
         }
 
-        private void lblHeader_Click(object sender, EventArgs e)
+        
+        private void LoadStudentData()
         {
-
-        }
-
-        private void picGradIcons_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Profilebox_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void ProfileMenu_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ProfileMenu.SelectedItem == null)
-                return;
-
-            string selectedOption = ProfileMenu.SelectedItem.ToString() ?? "";
-
-            switch (selectedOption)
+            try
             {
-                case "Edit profile":
-                    MessageBox.Show(
-                        "Profile feature is not implemented yet.",
-                        "Information",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-                    break;
+                using (MySqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    
+                    string query = "SELECT student_id, user_id, full_name, course FROM students WHERE user_id = @userId";
 
-                case "View students":
-                    MessageBox.Show(
-                        "View Students feature is not implemented yet.",
-                        "Information",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-                    break;
-
-                case "Logout":
-                    DialogResult result = MessageBox.Show(
-                        "Are you sure you want to log out?",
-                        "Confirm Logout",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question
-                    );
-
-                    if (result == DialogResult.Yes)
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
-                        this.Hide();
+                        cmd.Parameters.AddWithValue("@userId", currentLoggedInUserId);
 
-                        LoginForm login = new LoginForm();
-                        login.Show();
+                        using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            adapter.Fill(dt);
+
+                            
+                            foreach (Control c in this.Controls)
+                            {
+                                if (c is DataGridView dgv)
+                                {
+                                    dgv.DataSource = dt;
+                                    break;
+                                }
+                            }
+                        }
                     }
-                    break;
+                }
             }
-
-            ProfileMenu.SelectedIndex = -1;
-        }
-
-        private void btnProfileMenu_Click(object sender, EventArgs e)
-        {
-            ProfileMenu.Focus();
-            ProfileMenu.DroppedDown = true;
-        }
-
-        private void panel3_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading dynamic data: " + ex.Message, "Database Info", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-
+            
+            LoadStudentData();
         }
 
-        private void txtFullName_TextChanged(object sender, EventArgs e)
+        
+        private void ProfileMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (ProfileMenu.SelectedItem == null) return;
+            if (ProfileMenu.SelectedItem.ToString() == "Logout")
+            {
+                this.Hide();
+                LoginForm login = new LoginForm();
+                login.Show();
+            }
+            ProfileMenu.SelectedIndex = -1;
         }
 
-        private void textCourse_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblSearch_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void btnProfileMenu_Click(object sender, EventArgs e) { ProfileMenu.Focus(); ProfileMenu.DroppedDown = true; }
+        private void lblHeader_Click(object sender, EventArgs e) { }
+        private void picGradIcons_Click(object sender, EventArgs e) { }
+        private void Profilebox_Click(object sender, EventArgs e) { }
+        private void panel3_Paint(object sender, PaintEventArgs e) { }
+        private void label2_Click(object sender, EventArgs e) { }
+        private void txtFullName_TextChanged(object sender, EventArgs e) { }
+        private void textCourse_TextChanged(object sender, EventArgs e) { }
+        private void label3_Click(object sender, EventArgs e) { }
+        private void textBox1_TextChanged(object sender, EventArgs e) { }
+        private void lblSearch_Click(object sender, EventArgs e) { }
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) { }
     }
-} 
+}
