@@ -40,7 +40,6 @@
             lblHeader = new Label();
             imageList1 = new ImageList(components);
             panel3 = new Panel();
-            txtCourse = new TextBox();
             pictureBox2 = new PictureBox();
             btnUpdate = new Button();
             btnDelete = new Button();
@@ -67,6 +66,7 @@
             YearLevel = new DataGridViewTextBoxColumn();
             mySqlCommand1 = new MySql.Data.MySqlClient.MySqlCommand();
             label8 = new Label();
+            txtCourse = new TextBox();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Profilebox).BeginInit();
@@ -205,13 +205,6 @@
             panel3.TabIndex = 3;
             panel3.Paint += panel3_Paint;
             // 
-            // txtCourse
-            // 
-            txtCourse.Location = new Point(26, 264);
-            txtCourse.Name = "txtCourse";
-            txtCourse.Size = new Size(358, 31);
-            txtCourse.TabIndex = 14;
-            // 
             // pictureBox2
             // 
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
@@ -284,7 +277,7 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label7.Location = new Point(26, 334);
+            label7.Location = new Point(26, 332);
             label7.Name = "label7";
             label7.Size = new Size(94, 25);
             label7.TabIndex = 6;
@@ -302,7 +295,7 @@
             // 
             comboBox1.FormattingEnabled = true;
             comboBox1.Items.AddRange(new object[] { "1st Year", "2nd Year", "3rd Year", "4th Year" });
-            comboBox1.Location = new Point(26, 364);
+            comboBox1.Location = new Point(26, 362);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(358, 33);
             comboBox1.TabIndex = 3;
@@ -469,6 +462,13 @@
             label8.Size = new Size(487, 25);
             label8.TabIndex = 6;
             label8.Text = "Manage, add, update, and view students all in one place.";
+            // 
+            // txtCourse
+            // 
+            txtCourse.Location = new Point(26, 264);
+            txtCourse.Name = "txtCourse";
+            txtCourse.Size = new Size(358, 31);
+            txtCourse.TabIndex = 14;
             // 
             // StudentRecords
             // 

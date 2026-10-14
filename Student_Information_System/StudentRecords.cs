@@ -7,10 +7,8 @@ namespace Student_Information_System
 {
     public partial class StudentRecords : Form
     {
-        private DatabaseConnection db = new DatabaseConnection();
-       
+        
         private int currentLoggedInUserId;
-
         public StudentRecords(int userId)
         {
             InitializeComponent();
@@ -23,7 +21,7 @@ namespace Student_Information_System
         {
             try
             {
-                using (MySqlConnection conn = db.GetConnection())
+                using (MySqlConnection conn = DatabaseConnection.GetConnection())
                 {
                     conn.Open();
                     

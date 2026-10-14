@@ -7,7 +7,6 @@ namespace Student_Information_System
     public partial class LoginForm : Form
     {
         // Reference your project's database connection class wrapper
-        private DatabaseConnection db = new DatabaseConnection();
 
         public LoginForm()
         {
@@ -39,7 +38,7 @@ namespace Student_Information_System
 
             try
             {
-                using (MySqlConnection conn = db.GetConnection())
+                using (MySqlConnection conn = DatabaseConnection.GetConnection())
                 {
                     conn.Open();
 
