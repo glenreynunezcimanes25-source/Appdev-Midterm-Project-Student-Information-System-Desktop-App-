@@ -8,7 +8,7 @@ namespace Student_Information_System
             "Server=localhost;" +
             "Port=3306;" +
             "Database=student_information_system;" +
-            "Uid=root;" +   
+            "Uid=root;" +    
             "Pwd=09091862735Tim;";
 
         public MySqlConnection GetConnection()
