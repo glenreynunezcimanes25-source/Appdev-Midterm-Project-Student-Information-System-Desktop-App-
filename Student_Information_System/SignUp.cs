@@ -6,7 +6,6 @@ namespace Student_Information_System
 {
     public partial class SignUpForm : Form
     {
-        private DatabaseConnection db = new DatabaseConnection();
 
         public SignUpForm()
         {
@@ -40,7 +39,7 @@ namespace Student_Information_System
 
             try
             {
-                using (MySqlConnection conn = db.GetConnection())
+                using(MySqlConnection conn = DatabaseConnection.GetConnection())
                 {
                     conn.Open();
                     string query = "INSERT INTO users (username, password_hash) VALUES (@user, @pass)";
