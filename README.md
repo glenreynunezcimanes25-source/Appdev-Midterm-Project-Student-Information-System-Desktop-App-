@@ -17,7 +17,6 @@ and MySQL for managing student records.
 - Windows Forms
 - Visual Studio
 - MySQL
-- MySql.Data
 
 ## Requirements
 - Windows

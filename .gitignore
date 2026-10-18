@@ -17,8 +17,7 @@ obj/
 Thumbs.db
 .DS_Store
 
-# cherrytree 
-*.ctb
+#cherry tree backup file
 *.ctb~
 *.ctb~~
 *.ctb~~~
