@@ -40,6 +40,7 @@
             lblHeader = new Label();
             imageList1 = new ImageList(components);
             panel3 = new Panel();
+            txtCourse = new TextBox();
             pictureBox2 = new PictureBox();
             btnUpdate = new Button();
             btnDelete = new Button();
@@ -66,7 +67,6 @@
             YearLevel = new DataGridViewTextBoxColumn();
             mySqlCommand1 = new MySql.Data.MySqlClient.MySqlCommand();
             label8 = new Label();
-            txtCourse = new TextBox();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Profilebox).BeginInit();
@@ -123,7 +123,7 @@
             ProfileMenu.FlatStyle = FlatStyle.Flat;
             ProfileMenu.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             ProfileMenu.FormattingEnabled = true;
-            ProfileMenu.Items.AddRange(new object[] { "Edit profile", "View students", "Logout" });
+            ProfileMenu.Items.AddRange(new object[] { "Edit profile", "View students", "Export table as pdf", "Export table as excel", "Logout" });
             ProfileMenu.Location = new Point(1288, 52);
             ProfileMenu.Margin = new Padding(0);
             ProfileMenu.Name = "ProfileMenu";
@@ -204,6 +204,13 @@
             panel3.Size = new Size(446, 528);
             panel3.TabIndex = 3;
             panel3.Paint += panel3_Paint;
+            // 
+            // txtCourse
+            // 
+            txtCourse.Location = new Point(26, 264);
+            txtCourse.Name = "txtCourse";
+            txtCourse.Size = new Size(358, 31);
+            txtCourse.TabIndex = 14;
             // 
             // pictureBox2
             // 
@@ -462,13 +469,6 @@
             label8.Size = new Size(487, 25);
             label8.TabIndex = 6;
             label8.Text = "Manage, add, update, and view students all in one place.";
-            // 
-            // txtCourse
-            // 
-            txtCourse.Location = new Point(26, 264);
-            txtCourse.Name = "txtCourse";
-            txtCourse.Size = new Size(358, 31);
-            txtCourse.TabIndex = 14;
             // 
             // StudentRecords
             // 

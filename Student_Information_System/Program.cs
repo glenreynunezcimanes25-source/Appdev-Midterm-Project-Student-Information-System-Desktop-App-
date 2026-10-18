@@ -1,3 +1,4 @@
+using QuestPDF.Infrastructure;
 using System;
 using System.Windows.Forms;
 
@@ -8,6 +9,7 @@ namespace Student_Information_System
         [STAThread]
         static void Main()
         {
+            QuestPDF.Settings.License = LicenseType.Community;
             ApplicationConfiguration.Initialize();
 
             try
