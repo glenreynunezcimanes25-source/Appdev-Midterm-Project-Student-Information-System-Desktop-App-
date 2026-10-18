@@ -1,1 +1,24 @@
+
+# Visual Studio local files
 .vs/
+*.user
+*.suo
+
+# Build output
+bin/
+obj/
+
+# Temporary and backup files
+*.tmp
+*.temp
+*~
+
+# Operating system files
+Thumbs.db
+.DS_Store
+
+# cherrytree 
+*.ctb
+*.ctb~
+*.ctb~~
+*.ctb~~~
