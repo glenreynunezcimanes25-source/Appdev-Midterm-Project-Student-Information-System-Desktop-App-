@@ -55,13 +55,14 @@
             label2 = new Label();
             label3 = new Label();
             panel2 = new Panel();
+            label9 = new Label();
             lblTotalStudents = new Label();
             label4 = new Label();
             pictureBox3 = new PictureBox();
             btnSearch = new Button();
             txtSearch = new TextBox();
             dgvStudentData = new DataGridView();
-            Id = new DataGridViewTextBoxColumn();
+            ID = new DataGridViewTextBoxColumn();
             FullName = new DataGridViewTextBoxColumn();
             Course = new DataGridViewTextBoxColumn();
             YearLevel = new DataGridViewTextBoxColumn();
@@ -353,6 +354,7 @@
             // panel2
             // 
             panel2.BackColor = SystemColors.ButtonHighlight;
+            panel2.Controls.Add(label9);
             panel2.Controls.Add(lblTotalStudents);
             panel2.Controls.Add(label4);
             panel2.Controls.Add(pictureBox3);
@@ -365,11 +367,21 @@
             panel2.Size = new Size(830, 528);
             panel2.TabIndex = 5;
             // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font("Segoe UI", 11F);
+            label9.Location = new Point(21, 96);
+            label9.Name = "label9";
+            label9.Size = new Size(73, 25);
+            label9.TabIndex = 8;
+            label9.Text = "Search:";
+            // 
             // lblTotalStudents
             // 
             lblTotalStudents.BackColor = SystemColors.Control;
             lblTotalStudents.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblTotalStudents.Location = new Point(725, 88);
+            lblTotalStudents.Location = new Point(725, 92);
             lblTotalStudents.Name = "lblTotalStudents";
             lblTotalStudents.Size = new Size(79, 31);
             lblTotalStudents.TabIndex = 6;
@@ -398,21 +410,23 @@
             // 
             // btnSearch
             // 
-            btnSearch.Location = new Point(19, 89);
+            btnSearch.Location = new Point(632, 92);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(87, 31);
             btnSearch.TabIndex = 3;
-            btnSearch.Text = "Search:";
+            btnSearch.Text = "Search";
             btnSearch.UseVisualStyleBackColor = true;
+            btnSearch.Click += btnSearch_Click;
             // 
             // txtSearch
             // 
             txtSearch.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtSearch.CharacterCasing = CharacterCasing.Lower;
             txtSearch.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtSearch.Location = new Point(112, 89);
+            txtSearch.Location = new Point(102, 92);
             txtSearch.Name = "txtSearch";
             txtSearch.PlaceholderText = "Search by name, course, or ID...";
-            txtSearch.Size = new Size(607, 31);
+            txtSearch.Size = new Size(527, 31);
             txtSearch.TabIndex = 1;
             txtSearch.TextChanged += textBox1_TextChanged;
             // 
@@ -421,7 +435,7 @@
             dgvStudentData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvStudentData.BackgroundColor = SystemColors.ActiveCaption;
             dgvStudentData.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvStudentData.Columns.AddRange(new DataGridViewColumn[] { Id, FullName, Course, YearLevel });
+            dgvStudentData.Columns.AddRange(new DataGridViewColumn[] { ID, FullName, Course, YearLevel });
             dgvStudentData.GridColor = SystemColors.HotTrack;
             dgvStudentData.Location = new Point(19, 137);
             dgvStudentData.Name = "dgvStudentData";
@@ -429,26 +443,30 @@
             dgvStudentData.Size = new Size(789, 375);
             dgvStudentData.TabIndex = 0;
             // 
-            // Id
+            // ID
             // 
-            Id.HeaderText = "ID";
-            Id.MinimumWidth = 6;
-            Id.Name = "Id";
+            ID.DataPropertyName = "student_id";
+            ID.HeaderText = "ID";
+            ID.MinimumWidth = 6;
+            ID.Name = "ID";
             // 
             // FullName
             // 
+            FullName.DataPropertyName = "full_name";
             FullName.HeaderText = "Full name";
             FullName.MinimumWidth = 6;
             FullName.Name = "FullName";
             // 
             // Course
             // 
+            Course.DataPropertyName = "course";
             Course.HeaderText = "Course";
             Course.MinimumWidth = 6;
             Course.Name = "Course";
             // 
             // YearLevel
             // 
+            YearLevel.DataPropertyName = "year_level";
             YearLevel.HeaderText = "Year Level";
             YearLevel.MinimumWidth = 6;
             YearLevel.Name = "YearLevel";
@@ -529,10 +547,6 @@
         private PictureBox pictureBox2;
         private Panel panel2;
         private DataGridView dgvStudentData;
-        private DataGridViewTextBoxColumn Id;
-        private DataGridViewTextBoxColumn FullName;
-        private DataGridViewTextBoxColumn Course;
-        private DataGridViewTextBoxColumn YearLevel;
         private TextBox txtSearch;
         private Button btnSearch;
         private Label label4;
@@ -541,5 +555,10 @@
         private Label lblTotalStudents;
         private Label label8;
         private TextBox txtCourse;
+        private Label label9;
+        private DataGridViewTextBoxColumn ID;
+        private DataGridViewTextBoxColumn FullName;
+        private DataGridViewTextBoxColumn Course;
+        private DataGridViewTextBoxColumn YearLevel;
     }
 }

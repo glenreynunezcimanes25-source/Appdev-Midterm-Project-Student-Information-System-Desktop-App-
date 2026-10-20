@@ -15,7 +15,7 @@ namespace Student_Information_System
 {
     public partial class StudentRecords : Form
     {
-        
+
         private int currentLoggedInUserId;
         public StudentRecords(int userId)
         {
@@ -23,8 +23,6 @@ namespace Student_Information_System
             this.currentLoggedInUserId = userId;
             LoadStudentData();
         }
-
-
 
         private void LoadStudentData()
         {
@@ -35,30 +33,25 @@ namespace Student_Information_System
                     conn.Open();
 
                     string query = @"
-                SELECT
-                    student_id AS Id,
-                    full_name AS FullName,
-                    course AS Course,
-                    year_level AS YearLevel
+                SELECT student_id, full_name, course, year_level
                 FROM students
-                WHERE user_id = @userId";
+                WHERE user_id = @userId
+                ORDER BY student_id ASC;";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue(
-                            "@userId",
-                            currentLoggedInUserId
-                        );
+                            "@userId", currentLoggedInUserId);
 
                         using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                         {
                             DataTable dt = new DataTable();
                             adapter.Fill(dt);
 
-                            Id.DataPropertyName = "Id";
-                            FullName.DataPropertyName = "FullName";
-                            Course.DataPropertyName = "Course";
-                            YearLevel.DataPropertyName = "YearLevel";
+                            ID.DataPropertyName = "student_id";
+                            FullName.DataPropertyName = "full_name";
+                            Course.DataPropertyName = "course";
+                            YearLevel.DataPropertyName = "year_level";
 
                             dgvStudentData.AutoGenerateColumns = false;
                             dgvStudentData.DataSource = dt;
@@ -74,15 +67,15 @@ namespace Student_Information_System
                     "Error loading student data: " + ex.Message,
                     "Database Info",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
+                    MessageBoxIcon.Warning);
             }
         }
 
 
+
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            
+
             LoadStudentData();
         }
 
@@ -277,8 +270,66 @@ namespace Student_Information_System
         private void txtFullName_TextChanged(object sender, EventArgs e) { }
         private void textCourse_TextChanged(object sender, EventArgs e) { }
         private void label3_Click(object sender, EventArgs e) { }
-        private void textBox1_TextChanged(object sender, EventArgs e) { }
+        private void textBox1_TextChanged(object sender, EventArgs e) { SearchStudents(txtSearch.Text.Trim()); }
+
+
+        private void SearchStudents(string searchText)
+        {
+            try
+            {
+                using (MySqlConnection conn = DatabaseConnection.GetConnection())
+                {
+                    conn.Open();
+
+                    string query = @"
+                SELECT student_id, full_name, course, year_level
+                FROM students
+                WHERE user_id = @userId
+                  AND (
+                      student_id LIKE @search
+                      OR full_name LIKE @search
+                      OR course LIKE @search
+                      OR year_level LIKE @search
+                  )
+                ORDER BY student_id ASC;";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue(
+                            "@userId", currentLoggedInUserId);
+
+                        cmd.Parameters.AddWithValue(
+                            "@search", "%" + searchText + "%");
+
+                        using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            adapter.Fill(dt);
+
+                            dgvStudentData.DataSource = dt;
+
+                            lblTotalStudents.Text = "Total: " + dt.Rows.Count;
+                        }
+                    }
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(
+                    "Search failed: " + ex.Message,
+                    "Database Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+
         private void lblSearch_Click(object sender, EventArgs e) { }
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) { }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            SearchStudents(txtSearch.Text.Trim());
+        }
     }
 }
