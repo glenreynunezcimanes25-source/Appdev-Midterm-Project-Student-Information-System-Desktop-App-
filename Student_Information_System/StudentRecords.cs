@@ -73,10 +73,228 @@ namespace Student_Information_System
 
 
 
+        // ===================== CRUD =====================
+
+        private enum FormMode { None, Add, Edit }
+        private FormMode mode = FormMode.None;
+
+        private const string YearPlaceholder = "Select year level";
+
+        // Reload the grid, keeping the current search filter if there is one.
+        private void RefreshStudents()
+        {
+            string search = txtSearch.Text.Trim();
+            if (search.Length == 0)
+                LoadStudentData();
+            else
+                SearchStudents(search);
+        }
+
+        private void ClearForm()
+        {
+            txtStudentId.Clear();
+            txtFullName.Clear();
+            txtCourse.Clear();
+            comboBox1.SelectedIndex = -1;
+            comboBox1.Text = YearPlaceholder;
+            txtStudentId.ReadOnly = false;
+            mode = FormMode.None;
+            dgvStudentData.ClearSelection();
+        }
+
+        private bool ValidateForm()
+        {
+            if (string.IsNullOrWhiteSpace(txtStudentId.Text))
+            {
+                MessageBox.Show("Please enter a Student ID.", "Validation Alert",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtStudentId.Focus();
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(txtFullName.Text))
+            {
+                MessageBox.Show("Please enter the student's full name.", "Validation Alert",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtFullName.Focus();
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(txtCourse.Text))
+            {
+                MessageBox.Show("Please enter a course.", "Validation Alert",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtCourse.Focus();
+                return false;
+            }
+            if (comboBox1.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a year level.", "Validation Alert",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                comboBox1.Focus();
+                return false;
+            }
+            return true;
+        }
+
+        // Copy the selected grid row into the input fields.
+        private bool LoadSelectedRowIntoForm()
+        {
+            if (dgvStudentData.CurrentRow == null || dgvStudentData.CurrentRow.IsNewRow)
+                return false;
+
+            DataGridViewRow row = dgvStudentData.CurrentRow;
+            txtStudentId.Text = row.Cells["ID"].Value?.ToString() ?? "";
+            txtFullName.Text = row.Cells["FullName"].Value?.ToString() ?? "";
+            txtCourse.Text = row.Cells["Course"].Value?.ToString() ?? "";
+            comboBox1.SelectedItem = row.Cells["YearLevel"].Value?.ToString();
+            return true;
+        }
+
+        private void dgvStudentData_CellClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            if (LoadSelectedRowIntoForm())
+            {
+                mode = FormMode.Edit;
+                txtStudentId.ReadOnly = true;   // primary key cannot be changed
+            }
+        }
+
+        // CREATE (step 1): prepare an empty form for a new student.
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            ClearForm();
+            mode = FormMode.Add;
+            txtStudentId.Focus();
+        }
+
+        // UPDATE (step 1): load the selected student so it can be edited.
         private void btnUpdate_Click(object sender, EventArgs e)
         {
+            if (!LoadSelectedRowIntoForm())
+            {
+                MessageBox.Show("Please select a student from the table to update.",
+                    "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
 
-            LoadStudentData();
+            mode = FormMode.Edit;
+            txtStudentId.ReadOnly = true;
+            txtFullName.Focus();
+        }
+
+        // CREATE / UPDATE (final step): write the form data to the database.
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (mode == FormMode.None)
+            {
+                MessageBox.Show("Click 'Add' to create a new student, or select a student and click 'Update'.",
+                    "Nothing to Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (!ValidateForm()) return;
+
+            string id = txtStudentId.Text.Trim();
+            string name = txtFullName.Text.Trim();
+            string course = txtCourse.Text.Trim();
+            string year = comboBox1.SelectedItem!.ToString()!;
+
+            try
+            {
+                using (MySqlConnection conn = DatabaseConnection.GetConnection())
+                {
+                    conn.Open();
+
+                    string query = mode == FormMode.Add
+                        ? @"INSERT INTO students (student_id, user_id, full_name, course, year_level)
+                            VALUES (@id, @userId, @name, @course, @year);"
+                        : @"UPDATE students
+                            SET full_name = @name, course = @course, year_level = @year
+                            WHERE student_id = @id AND user_id = @userId;";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cmd.Parameters.AddWithValue("@userId", currentLoggedInUserId);
+                        cmd.Parameters.AddWithValue("@name", name);
+                        cmd.Parameters.AddWithValue("@course", course);
+                        cmd.Parameters.AddWithValue("@year", year);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show(
+                    mode == FormMode.Add ? "Student added successfully!" : "Student updated successfully!",
+                    "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                ClearForm();
+                RefreshStudents();
+            }
+            catch (MySqlException ex) when (ex.Number == 1062)   // duplicate primary key
+            {
+                MessageBox.Show("A student with ID \"" + id + "\" already exists.",
+                    "Duplicate ID", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtStudentId.Focus();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to save student: " + ex.Message, "Database Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // DELETE: remove the selected student after confirmation.
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (dgvStudentData.CurrentRow == null || dgvStudentData.CurrentRow.IsNewRow)
+            {
+                MessageBox.Show("Please select a student from the table to delete.",
+                    "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            string id = dgvStudentData.CurrentRow.Cells["ID"].Value?.ToString() ?? "";
+            string name = dgvStudentData.CurrentRow.Cells["FullName"].Value?.ToString() ?? "";
+
+            DialogResult confirm = MessageBox.Show(
+                $"Are you sure you want to delete {name} (ID: {id})?\nThis cannot be undone.",
+                "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (confirm != DialogResult.Yes) return;
+
+            try
+            {
+                using (MySqlConnection conn = DatabaseConnection.GetConnection())
+                {
+                    conn.Open();
+
+                    string query = "DELETE FROM students WHERE student_id = @id AND user_id = @userId;";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cmd.Parameters.AddWithValue("@userId", currentLoggedInUserId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show("Student deleted successfully!", "Success",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                ClearForm();
+                RefreshStudents();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to delete student: " + ex.Message, "Database Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            ClearForm();
         }
 
 
