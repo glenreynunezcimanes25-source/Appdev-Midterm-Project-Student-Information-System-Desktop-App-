@@ -9,9 +9,8 @@ and MySQL for managing student records.
 - Dashboard
 - Add, View, Edit, and Delete students
 - Search student records
-- User Profile
-- User-specific student records
-
+- Table export
+- 
 ## Technologies Used
 - C#
 - Windows Forms
