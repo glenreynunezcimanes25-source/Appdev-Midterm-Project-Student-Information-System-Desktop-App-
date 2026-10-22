@@ -7,6 +7,7 @@ using System;
 using System.Data;
 using System.Windows.Forms;
 using Colors = QuestPDF.Helpers.Colors;
+using System.Drawing;
 
 namespace Student_Information_System
 {
@@ -21,12 +22,19 @@ namespace Student_Information_System
         public StudentRecords(int userId)
         {
             InitializeComponent();
-            this.currentLoggedInUserId = userId;
+            currentLoggedInUserId = userId;
+
+            // Configure the grid so selecting a student selects the whole row.
+            dgvStudentData.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvStudentData.MultiSelect = false;
 
             // Wire event handlers
             dgvStudentData.CellClick += dgvStudentData_CellClick;
+            dgvStudentData.SelectionChanged += dgvStudentData_SelectionChanged;
 
             LoadStudentData();
+            dgvStudentData.ClearSelection();
+            UpdateButtonStates();
         }
 
         // DATA LOADING & REFRESH
@@ -64,6 +72,8 @@ namespace Student_Information_System
                             // Reset DataSource to force grid view UI update
                             dgvStudentData.DataSource = null;
                             dgvStudentData.DataSource = dt;
+                            dgvStudentData.ClearSelection();
+                            UpdateButtonStates();
 
                             if (lblTotalStudents != null)
                                 lblTotalStudents.Text = "Total: " + dt.Rows.Count;
@@ -100,6 +110,7 @@ namespace Student_Information_System
             txtStudentId.ReadOnly = false;
             mode = FormMode.None;
             dgvStudentData.ClearSelection();
+            UpdateButtonStates();
         }
 
         private bool ValidateForm()
@@ -161,6 +172,13 @@ namespace Student_Information_System
                 mode = FormMode.Edit;
                 txtStudentId.ReadOnly = true; // Lock primary key from editing
             }
+
+            UpdateButtonStates();
+        }
+
+        private void dgvStudentData_SelectionChanged(object? sender, EventArgs e)
+        {
+            UpdateButtonStates();
         }
 
         // BUTTON ACTIONS (ADD, UPDATE, SAVE, DELETE, CLEAR)
@@ -170,7 +188,20 @@ namespace Student_Information_System
             mode = FormMode.Add;
             txtStudentId.Focus();
         }
+        private void UpdateButtonStates()
+        {
+            // SelectedRows works as expected when the DataGridView uses FullRowSelect.
+            bool studentSelected = dgvStudentData.SelectedRows.Count > 0;
 
+            // Change only the background color; keep the button design and Enabled state.
+            btnUpdate.BackColor = studentSelected
+                ? System.Drawing.Color.FromArgb(37, 99, 235)
+                : System.Drawing.Color.LightGray;
+
+            btnDelete.BackColor = studentSelected
+                ? System.Drawing.Color.FromArgb(220, 38, 38)
+                : System.Drawing.Color.LightGray;
+        }
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             if (!LoadSelectedRowIntoForm())
@@ -243,7 +274,9 @@ namespace Student_Information_System
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dgvStudentData.CurrentRow == null || dgvStudentData.CurrentRow.IsNewRow)
+            if (dgvStudentData.SelectedRows.Count == 0 ||
+                dgvStudentData.CurrentRow == null ||
+                dgvStudentData.CurrentRow.IsNewRow)
             {
                 MessageBox.Show("Please select a student from the table to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -323,6 +356,8 @@ namespace Student_Information_System
 
                             dgvStudentData.DataSource = null;
                             dgvStudentData.DataSource = dt;
+                            dgvStudentData.ClearSelection();
+                            UpdateButtonStates();
 
                             if (lblTotalStudents != null)
                                 lblTotalStudents.Text = "Total: " + dt.Rows.Count;
