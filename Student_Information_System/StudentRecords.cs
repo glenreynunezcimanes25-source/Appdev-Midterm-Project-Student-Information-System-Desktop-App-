@@ -1,4 +1,5 @@
-﻿using ClosedXML.Excel;
+﻿
+using ClosedXML.Excel;
 using MySql.Data.MySqlClient;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -24,11 +25,9 @@ namespace Student_Information_System
             InitializeComponent();
             currentLoggedInUserId = userId;
 
-            // Configure the grid so selecting a student selects the whole row.
             dgvStudentData.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvStudentData.MultiSelect = false;
 
-            // Wire event handlers
             dgvStudentData.CellClick += dgvStudentData_CellClick;
             dgvStudentData.SelectionChanged += dgvStudentData_SelectionChanged;
 
@@ -37,7 +36,6 @@ namespace Student_Information_System
             UpdateButtonStates();
         }
 
-        // DATA LOADING & REFRESH
         private void LoadStudentData()
         {
             try
@@ -61,18 +59,23 @@ namespace Student_Information_System
                             DataTable dt = new DataTable();
                             adapter.Fill(dt);
 
-                            // Map column properties if AutoGenerateColumns is false
-                            if (dgvStudentData.Columns.Contains("ID")) ID.DataPropertyName = "student_id";
-                            if (dgvStudentData.Columns.Contains("FullName")) FullName.DataPropertyName = "full_name";
-                            if (dgvStudentData.Columns.Contains("Course")) Course.DataPropertyName = "course";
-                            if (dgvStudentData.Columns.Contains("YearLevel")) YearLevel.DataPropertyName = "year_level";
+                            if (dgvStudentData.Columns.Contains("ID"))
+                                ID.DataPropertyName = "student_id";
+
+                            if (dgvStudentData.Columns.Contains("FullName"))
+                                FullName.DataPropertyName = "full_name";
+
+                            if (dgvStudentData.Columns.Contains("Course"))
+                                Course.DataPropertyName = "course";
+
+                            if (dgvStudentData.Columns.Contains("YearLevel"))
+                                YearLevel.DataPropertyName = "year_level";
 
                             dgvStudentData.AutoGenerateColumns = false;
-
-                            // Reset DataSource to force grid view UI update
                             dgvStudentData.DataSource = null;
                             dgvStudentData.DataSource = dt;
                             dgvStudentData.ClearSelection();
+
                             UpdateButtonStates();
 
                             if (lblTotalStudents != null)
@@ -83,32 +86,44 @@ namespace Student_Information_System
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show("Cannot connect to MySQL (" + ex.Number + "): " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "Cannot connect to MySQL (" + ex.Number + "): " + ex.Message,
+                    "Database Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading student data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "Error loading student data: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
         private void RefreshStudents()
         {
             string search = txtSearch != null ? txtSearch.Text.Trim() : "";
+
             if (string.IsNullOrEmpty(search))
                 LoadStudentData();
             else
                 SearchStudents(search);
         }
-        // FORM HELPERS & SELECTION 
+
         private void ClearForm()
         {
             txtStudentId.Clear();
             txtFullName.Clear();
             txtCourse.Clear();
+
             comboBox1.SelectedIndex = -1;
             comboBox1.Text = YearPlaceholder;
+
             txtStudentId.ReadOnly = false;
             mode = FormMode.None;
+
             dgvStudentData.ClearSelection();
             UpdateButtonStates();
         }
@@ -117,34 +132,61 @@ namespace Student_Information_System
         {
             if (string.IsNullOrWhiteSpace(txtStudentId.Text))
             {
-                MessageBox.Show("Please enter a Student ID.", "Validation Alert", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Please enter a Student ID.",
+                    "Validation Alert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 txtStudentId.Focus();
                 return false;
             }
+
             if (string.IsNullOrWhiteSpace(txtFullName.Text))
             {
-                MessageBox.Show("Please enter the student's full name.", "Validation Alert", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Please enter the student's full name.",
+                    "Validation Alert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 txtFullName.Focus();
                 return false;
             }
+
             if (string.IsNullOrWhiteSpace(txtCourse.Text))
             {
-                MessageBox.Show("Please enter a course.", "Validation Alert", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Please enter a course.",
+                    "Validation Alert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 txtCourse.Focus();
                 return false;
             }
-            if (comboBox1.SelectedItem == null && (string.IsNullOrWhiteSpace(comboBox1.Text) || comboBox1.Text == YearPlaceholder))
+
+            if (comboBox1.SelectedItem == null &&
+                (string.IsNullOrWhiteSpace(comboBox1.Text) ||
+                 comboBox1.Text == YearPlaceholder))
             {
-                MessageBox.Show("Please select a year level.", "Validation Alert", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Please select a year level.",
+                    "Validation Alert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 comboBox1.Focus();
                 return false;
             }
+
             return true;
         }
 
         private bool LoadSelectedRowIntoForm()
         {
-            if (dgvStudentData.CurrentRow == null || dgvStudentData.CurrentRow.IsNewRow)
+            if (dgvStudentData.CurrentRow == null ||
+                dgvStudentData.CurrentRow.IsNewRow)
                 return false;
 
             DataGridViewRow row = dgvStudentData.CurrentRow;
@@ -156,44 +198,48 @@ namespace Student_Information_System
                 txtCourse.Text = drv["course"]?.ToString() ?? string.Empty;
 
                 string yearVal = drv["year_level"]?.ToString() ?? string.Empty;
+
                 comboBox1.SelectedItem = yearVal;
+
                 if (comboBox1.SelectedIndex == -1)
                     comboBox1.Text = yearVal;
             }
+
             return true;
         }
 
-        private void dgvStudentData_CellClick(object? sender, DataGridViewCellEventArgs e)
+        private void dgvStudentData_CellClick(
+            object? sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0) return;
+            if (e.RowIndex < 0)
+                return;
 
             if (LoadSelectedRowIntoForm())
             {
                 mode = FormMode.Edit;
-                txtStudentId.ReadOnly = true; // Lock primary key from editing
+                txtStudentId.ReadOnly = true;
             }
 
             UpdateButtonStates();
         }
 
-        private void dgvStudentData_SelectionChanged(object? sender, EventArgs e)
+        private void dgvStudentData_SelectionChanged(
+            object? sender, EventArgs e)
         {
             UpdateButtonStates();
         }
 
-        // BUTTON ACTIONS (ADD, UPDATE, SAVE, DELETE, CLEAR)
         private void btnAdd_Click(object sender, EventArgs e)
         {
             ClearForm();
             mode = FormMode.Add;
             txtStudentId.Focus();
         }
+
         private void UpdateButtonStates()
         {
-            // SelectedRows works as expected when the DataGridView uses FullRowSelect.
             bool studentSelected = dgvStudentData.SelectedRows.Count > 0;
 
-            // Change only the background color; keep the button design and Enabled state.
             btnUpdate.BackColor = studentSelected
                 ? System.Drawing.Color.FromArgb(37, 99, 235)
                 : System.Drawing.Color.LightGray;
@@ -202,11 +248,17 @@ namespace Student_Information_System
                 ? System.Drawing.Color.FromArgb(220, 38, 38)
                 : System.Drawing.Color.LightGray;
         }
+
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             if (!LoadSelectedRowIntoForm())
             {
-                MessageBox.Show("Please select a student from the table to update.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    "Please select a student from the table to update.",
+                    "No Selection",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
                 return;
             }
 
@@ -219,16 +271,23 @@ namespace Student_Information_System
         {
             if (mode == FormMode.None)
             {
-                MessageBox.Show("Click 'Add' to enter a new student, or select a student and click 'Update' first.", "Nothing to Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    "Click 'Add' to enter a new student, or select a student and click 'Update' first.",
+                    "Nothing to Save",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
                 return;
             }
 
-            if (!ValidateForm()) return;
+            if (!ValidateForm())
+                return;
 
             string id = txtStudentId.Text.Trim();
             string name = txtFullName.Text.Trim();
             string course = txtCourse.Text.Trim();
-            string year = comboBox1.SelectedItem?.ToString() ?? comboBox1.Text.Trim();
+            string year = comboBox1.SelectedItem?.ToString()
+                ?? comboBox1.Text.Trim();
 
             try
             {
@@ -237,11 +296,15 @@ namespace Student_Information_System
                     conn.Open();
 
                     string query = mode == FormMode.Add
-                        ? @"INSERT INTO students (student_id, user_id, full_name, course, year_level)
+                        ? @"INSERT INTO students
+                            (student_id, user_id, full_name, course, year_level)
                             VALUES (@id, @userId, @name, @course, @year);"
                         : @"UPDATE students
-                            SET full_name = @name, course = @course, year_level = @year
-                            WHERE student_id = @id AND user_id = @userId;";
+                            SET full_name = @name,
+                                course = @course,
+                                year_level = @year
+                            WHERE student_id = @id
+                            AND user_id = @userId;";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
@@ -250,25 +313,39 @@ namespace Student_Information_System
                         cmd.Parameters.AddWithValue("@name", name);
                         cmd.Parameters.AddWithValue("@course", course);
                         cmd.Parameters.AddWithValue("@year", year);
+
                         cmd.ExecuteNonQuery();
                     }
                 }
 
                 MessageBox.Show(
-                    mode == FormMode.Add ? "Student registered successfully!" : "Student details updated successfully!",
-                    "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    mode == FormMode.Add
+                        ? "Student registered successfully!"
+                        : "Student details updated successfully!",
+                    "Success",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
 
                 ClearForm();
-                RefreshStudents(); // Updates DataGridView with newly saved records
+                RefreshStudents();
             }
             catch (MySqlException ex) when (ex.Number == 1062)
             {
-                MessageBox.Show("A student with ID \"" + id + "\" already exists.", "Duplicate ID", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "A student with ID \"" + id + "\" already exists.",
+                    "Duplicate ID",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 txtStudentId.Focus();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Unable to save student: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "Unable to save student: " + ex.Message,
+                    "Database Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -278,7 +355,12 @@ namespace Student_Information_System
                 dgvStudentData.CurrentRow == null ||
                 dgvStudentData.CurrentRow.IsNewRow)
             {
-                MessageBox.Show("Please select a student from the table to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    "Please select a student from the table to delete.",
+                    "No Selection",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
                 return;
             }
 
@@ -287,9 +369,12 @@ namespace Student_Information_System
 
             DialogResult confirm = MessageBox.Show(
                 $"Are you sure you want to delete student {name} (ID: {id})?\nThis action cannot be undone.",
-                "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                "Confirm Deletion",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
 
-            if (confirm != DialogResult.Yes) return;
+            if (confirm != DialogResult.Yes)
+                return;
 
             try
             {
@@ -297,24 +382,36 @@ namespace Student_Information_System
                 {
                     conn.Open();
 
-                    string query = "DELETE FROM students WHERE student_id = @id AND user_id = @userId;";
+                    string query = @"
+                        DELETE FROM students
+                        WHERE student_id = @id
+                        AND user_id = @userId;";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
                         cmd.Parameters.AddWithValue("@userId", currentLoggedInUserId);
+
                         cmd.ExecuteNonQuery();
                     }
                 }
 
-                MessageBox.Show("Student deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    "Student deleted successfully!",
+                    "Success",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
 
                 ClearForm();
                 RefreshStudents();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Unable to delete student: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "Unable to delete student: " + ex.Message,
+                    "Database Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -323,7 +420,6 @@ namespace Student_Information_System
             ClearForm();
         }
 
-        // SEARCH
         private void SearchStudents(string searchText)
         {
             try
@@ -336,12 +432,12 @@ namespace Student_Information_System
                         SELECT student_id, full_name, course, year_level
                         FROM students
                         WHERE user_id = @userId
-                          AND (
-                              student_id LIKE @search
-                              OR full_name LIKE @search
-                              OR course LIKE @search
-                              OR year_level LIKE @search
-                          )
+                        AND (
+                            student_id LIKE @search
+                            OR full_name LIKE @search
+                            OR course LIKE @search
+                            OR year_level LIKE @search
+                        )
                         ORDER BY student_id ASC;";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -357,6 +453,7 @@ namespace Student_Information_System
                             dgvStudentData.DataSource = null;
                             dgvStudentData.DataSource = dt;
                             dgvStudentData.ClearSelection();
+
                             UpdateButtonStates();
 
                             if (lblTotalStudents != null)
@@ -367,7 +464,11 @@ namespace Student_Information_System
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show("Search failed: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "Search failed: " + ex.Message,
+                    "Database Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -380,7 +481,7 @@ namespace Student_Information_System
         {
             SearchStudents(txtSearch.Text.Trim());
         }
-        // PROFILE / EXPORT MENU
+
         private void ProfileMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ProfileMenu.SelectedItem == null)
@@ -391,6 +492,7 @@ namespace Student_Information_System
             if (selectedOption == "Logout")
             {
                 this.Hide();
+
                 LoginForm login = new LoginForm();
                 login.Show();
             }
@@ -398,15 +500,20 @@ namespace Student_Information_System
             {
                 try
                 {
-                    DataTable dt = dgvStudentData.DataSource as DataTable ?? new DataTable();
+                    DataTable dt = dgvStudentData.DataSource as DataTable
+                        ?? new DataTable();
 
-                    if (dt == null || dt.Rows.Count == 0)
+                    if (dt.Rows.Count == 0)
                     {
                         MessageBox.Show("There are no student records to export.");
                         return;
                     }
 
-                    using (SaveFileDialog sfd = new SaveFileDialog { Filter = "PDF Document|*.pdf", FileName = "Student_Report.pdf" })
+                    using (SaveFileDialog sfd = new SaveFileDialog
+                    {
+                        Filter = "PDF Document|*.pdf",
+                        FileName = "Student_Report.pdf"
+                    })
                     {
                         if (sfd.ShowDialog() == DialogResult.OK)
                         {
@@ -416,12 +523,22 @@ namespace Student_Information_System
                                 {
                                     page.Margin(30);
 
-                                    page.Header().Text("Student Records Report").FontSize(16).Bold().FontColor(Colors.Blue.Medium);
+                                    page.Header()
+                                        .Text("Student Records Report")
+                                        .FontSize(16)
+                                        .Bold()
+                                        .FontColor(Colors.Blue.Medium);
 
                                     page.Content().Column(col =>
                                     {
-                                        col.Item().PaddingVertical(5).Text($"Generated Date: {DateTime.Now:MMMM dd, yyyy}");
-                                        col.Item().PaddingVertical(5).Text($"Total Students: {dt.Rows.Count}").Bold();
+                                        col.Item()
+                                            .PaddingVertical(5)
+                                            .Text($"Generated Date: {DateTime.Now:MMMM dd, yyyy}");
+
+                                        col.Item()
+                                            .PaddingVertical(5)
+                                            .Text($"Total Students: {dt.Rows.Count}")
+                                            .Bold();
 
                                         col.Item().PaddingVertical(10).Table(table =>
                                         {
@@ -443,10 +560,17 @@ namespace Student_Information_System
 
                                             foreach (DataRow row in dt.Rows)
                                             {
-                                                table.Cell().Element(CellStyle).Text(row["student_id"]?.ToString() ?? "");
-                                                table.Cell().Element(CellStyle).Text(row["full_name"]?.ToString() ?? "");
-                                                table.Cell().Element(CellStyle).Text(row["course"]?.ToString() ?? "");
-                                                table.Cell().Element(CellStyle).Text(row["year_level"]?.ToString() ?? "");
+                                                table.Cell().Element(CellStyle)
+                                                    .Text(row["student_id"]?.ToString() ?? "");
+
+                                                table.Cell().Element(CellStyle)
+                                                    .Text(row["full_name"]?.ToString() ?? "");
+
+                                                table.Cell().Element(CellStyle)
+                                                    .Text(row["course"]?.ToString() ?? "");
+
+                                                table.Cell().Element(CellStyle)
+                                                    .Text(row["year_level"]?.ToString() ?? "");
                                             }
                                         });
                                     });
@@ -460,7 +584,11 @@ namespace Student_Information_System
                                 });
                             }).GeneratePdf(sfd.FileName);
 
-                            MessageBox.Show("PDF report generated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show(
+                                "PDF report generated successfully!",
+                                "Success",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
                         }
                     }
                 }
@@ -473,7 +601,8 @@ namespace Student_Information_System
             {
                 try
                 {
-                    DataTable dt = dgvStudentData.DataSource as DataTable ?? new DataTable();
+                    DataTable dt = dgvStudentData.DataSource as DataTable
+                        ?? new DataTable();
 
                     if (dt.Rows.Count == 0)
                     {
@@ -481,7 +610,11 @@ namespace Student_Information_System
                         return;
                     }
 
-                    using (SaveFileDialog sfd = new SaveFileDialog { Filter = "Excel Workbook|*.xlsx", FileName = "Student_Report.xlsx" })
+                    using (SaveFileDialog sfd = new SaveFileDialog
+                    {
+                        Filter = "Excel Workbook|*.xlsx",
+                        FileName = "Student_Report.xlsx"
+                    })
                     {
                         if (sfd.ShowDialog() == DialogResult.OK)
                         {
@@ -493,7 +626,11 @@ namespace Student_Information_System
                                 workbook.SaveAs(sfd.FileName);
                             }
 
-                            MessageBox.Show("Excel report exported successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show(
+                                "Excel report exported successfully!",
+                                "Success",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
                         }
                     }
                 }
@@ -508,11 +645,18 @@ namespace Student_Information_System
 
         private static IContainer CellStyle(IContainer container)
         {
-            return container.Border(1).BorderColor(Colors.Grey.Lighten2).Padding(5);
+            return container
+                .Border(1)
+                .BorderColor(Colors.Grey.Lighten2)
+                .Padding(5);
         }
 
-        // EVENT STUBS FOR DESIGNER
-        private void btnProfileMenu_Click(object sender, EventArgs e) { ProfileMenu.Focus(); ProfileMenu.DroppedDown = true; }
+        private void btnProfileMenu_Click(object sender, EventArgs e)
+        {
+            ProfileMenu.Focus();
+            ProfileMenu.DroppedDown = true;
+        }
+
         private void lblHeader_Click(object sender, EventArgs e) { }
         private void picGradIcons_Click(object sender, EventArgs e) { }
         private void Profilebox_Click(object sender, EventArgs e) { }
@@ -523,5 +667,20 @@ namespace Student_Information_System
         private void label3_Click(object sender, EventArgs e) { }
         private void lblSearch_Click(object sender, EventArgs e) { }
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) { }
+
+        private void btnDashboard_Click(object sender, EventArgs e)
+        {
+            DashboardForm dashboard =
+                new DashboardForm(currentLoggedInUserId);
+
+            dashboard.FormClosed += (s, args) =>
+            {
+                this.Show();
+                this.LoadStudentData();
+            };
+
+            this.Hide();
+            dashboard.Show();
+        }
     }
 }
