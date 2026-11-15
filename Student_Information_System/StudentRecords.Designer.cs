@@ -31,7 +31,6 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StudentRecords));
             panel1 = new Panel();
-            btnDashboard = new Button();
             btnProfileMenu = new Button();
             pictureBox1 = new PictureBox();
             ProfileMenu = new ComboBox();
@@ -39,6 +38,7 @@
             Profilebox = new PictureBox();
             lblSubheader = new Label();
             lblHeader = new Label();
+            btnDashboard = new Button();
             imageList1 = new ImageList(components);
             panel3 = new Panel();
             txtStudentId = new TextBox();
@@ -97,22 +97,6 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1366, 152);
             panel1.TabIndex = 0;
-            // 
-            // btnDashboard
-            // 
-            btnDashboard.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnDashboard.BackColor = Color.White;
-            btnDashboard.Cursor = Cursors.Hand;
-            btnDashboard.FlatStyle = FlatStyle.Flat;
-            btnDashboard.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnDashboard.ForeColor = Color.Black;
-            btnDashboard.Location = new Point(644, 60);
-            btnDashboard.Name = "btnDashboard";
-            btnDashboard.Size = new Size(160, 29);
-            btnDashboard.TabIndex = 8;
-            btnDashboard.Text = " Dashboard View";
-            btnDashboard.UseVisualStyleBackColor = false;
-            btnDashboard.Click += btnDashboard_Click;
             // 
             // btnProfileMenu
             // 
@@ -203,6 +187,22 @@
             lblHeader.TabIndex = 0;
             lblHeader.Text = "Student Information System";
             lblHeader.Click += lblHeader_Click;
+            // 
+            // btnDashboard
+            // 
+            btnDashboard.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnDashboard.BackColor = Color.FromArgb(28, 82, 147);
+            btnDashboard.Cursor = Cursors.Hand;
+            btnDashboard.FlatStyle = FlatStyle.Flat;
+            btnDashboard.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnDashboard.ForeColor = Color.White;
+            btnDashboard.Location = new Point(632, 51);
+            btnDashboard.Name = "btnDashboard";
+            btnDashboard.Size = new Size(172, 38);
+            btnDashboard.TabIndex = 8;
+            btnDashboard.Text = " Dashboard View";
+            btnDashboard.UseVisualStyleBackColor = false;
+            btnDashboard.Click += btnDashboard_Click;
             // 
             // imageList1
             // 
