@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SIS.Mobile.ViewModels"
+             xmlns:m="clr-namespace:SIS.Mobile.Models"
+             x:Class="SIS.Mobile.Views.DirectoryPage"
+             x:DataType="vm:DirectoryViewModel"
+             Title="Student Directory">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Theme" Clicked="OnThemeToggle" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*" RowSpacing="10" Padding="16">
+
+        <SearchBar Grid.Row="0" Placeholder="Search by name or student ID"
+                   Text="{Binding SearchText}" />
+
+        <!-- Quick-filter chips -->
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Programs}"
+                        ItemsLayout="HorizontalList" HeightRequest="44">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="x:String">
+                    <Border Padding="16,8" Margin="0,0,8,0" StrokeThickness="0"
+                            BackgroundColor="{StaticResource Primary}">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20" />
+                        </Border.StrokeShape>
+                        <Label Text="{Binding .}" TextColor="White" FontSize="13" />
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding SelectProgramCommand,
+                                          Source={RelativeSource AncestorType={x:Type vm:DirectoryViewModel}}}"
+                                CommandParameter="{Binding .}" />
+                        </Border.GestureRecognizers>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Label Grid.Row="2" Text="{Binding StatusMessage}" IsVisible="{Binding HasStatus}"
+               TextColor="{StaticResource Danger}" />
+
+        <!-- Student cards -->
+        <RefreshView Grid.Row="3" IsRefreshing="{Binding IsBusy}" Command="{Binding LoadCommand}">
+            <CollectionView ItemsSource="{Binding Students}" SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.EmptyView>
+                    <Label Text="No students found" HorizontalOptions="Center" Margin="0,40" />
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:Student">
+                        <Border Padding="14" StrokeThickness="1"
+                                Stroke="{AppThemeBinding Light=#E5E7EB, Dark=#374151}"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark=#1F2937}">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding OpenDetailCommand,
+                                              Source={RelativeSource AncestorType={x:Type vm:DirectoryViewModel}}}"
+                                    CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+
+                            <Grid ColumnDefinitions="52,*,Auto" ColumnSpacing="12">
+                                <Border WidthRequest="52" HeightRequest="52" StrokeThickness="0"
+                                        BackgroundColor="{StaticResource Primary}">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="26" />
+                                    </Border.StrokeShape>
+                                    <Label Text="{Binding Initials}" TextColor="White" FontAttributes="Bold"
+                                           HorizontalOptions="Center" VerticalOptions="Center" />
+                                </Border>
+
+                                <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                    <Label Text="{Binding FullName}" FontAttributes="Bold" FontSize="16" />
+                                    <Label Text="{Binding StudentId}" FontSize="12" Opacity="0.7" />
+                                    <Label Text="{Binding Course}" FontSize="13" />
+                                </VerticalStackLayout>
+
+                                <Border Grid.Column="2" Padding="10,4" VerticalOptions="Start" StrokeThickness="0"
+                                        BackgroundColor="{StaticResource Accent}">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="10" />
+                                    </Border.StrokeShape>
+                                    <Label Text="{Binding YearLevel}" TextColor="White" FontSize="11" />
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

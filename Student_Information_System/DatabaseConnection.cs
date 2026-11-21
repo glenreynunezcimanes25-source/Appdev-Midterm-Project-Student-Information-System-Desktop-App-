@@ -5,7 +5,7 @@ namespace Student_Information_System
     public static class DatabaseConnection
     {
         // The user only needs to change this password.
-        private static readonly string mysqlPassword = "password";// Change this to your MySQL root password
+        private static readonly string mysqlPassword = "09091862735Tim";// Change this to your MySQL root password
 
         private static readonly string serverConnection =
             $"Server=localhost;" +
@@ -15,7 +15,7 @@ namespace Student_Information_System
         private static readonly string connectionString =
             serverConnection + "Database=student_information_system;";
 
-        public static void InitializeDatabase()
+        public  static void InitializeDatabase()
         {
             // STEP 1: Connect to MySQL WITHOUT selecting a database.
             using (MySqlConnection connection =

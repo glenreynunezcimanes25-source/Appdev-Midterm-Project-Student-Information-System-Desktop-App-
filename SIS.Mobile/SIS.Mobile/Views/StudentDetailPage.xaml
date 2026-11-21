@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:v="clr-namespace:SIS.Mobile.Views"
+             x:Class="SIS.Mobile.Views.StudentDetailPage"
+             x:DataType="v:StudentDetailPage"
+             Title="Student Profile">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="12" HorizontalOptions="Center">
+            <Border WidthRequest="96" HeightRequest="96" StrokeThickness="0"
+                    BackgroundColor="{StaticResource Primary}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="48" />
+                </Border.StrokeShape>
+                <Label Text="{Binding Student.Initials}" TextColor="White" FontSize="32"
+                       HorizontalOptions="Center" VerticalOptions="Center" />
+            </Border>
+
+            <Label Text="{Binding Student.FullName}" FontSize="22" FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+            <Label Text="{Binding Student.StudentId, StringFormat='ID: {0}'}" HorizontalOptions="Center" />
+            <Label Text="{Binding Student.Course, StringFormat='Program: {0}'}" HorizontalOptions="Center" />
+            <Label Text="{Binding Student.YearLevel, StringFormat='Year Level: {0}'}" HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
