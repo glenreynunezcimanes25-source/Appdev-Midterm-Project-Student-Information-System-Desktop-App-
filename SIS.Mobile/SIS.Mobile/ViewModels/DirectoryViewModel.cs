@@ -39,8 +39,14 @@ public partial class DirectoryViewModel : ObservableObject
 
             Programs.Clear();
             Programs.Add("All");
-            foreach (var p in _all.Select(s => s.Course.Trim().ToUpper()).Distinct().OrderBy(p => p))
-                Programs.Add(p);
+            foreach (var program in _all
+                .Select(s => (s.Course ?? "").Trim())
+                .Where(p => !string.IsNullOrWhiteSpace(p))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(p => p))
+            {
+                Programs.Add(program);
+            }
 
             ApplyFilter();
         }
@@ -62,16 +68,43 @@ public partial class DirectoryViewModel : ObservableObject
         Shell.Current.GoToAsync(nameof(StudentDetailPage),
             new Dictionary<string, object> { ["Student"] = student });
 
+
     private void ApplyFilter()
     {
         var q = SearchText?.Trim() ?? "";
+
         var result = _all.Where(s =>
-            (SelectedProgram == "All" || s.Course == SelectedProgram) &&
-            (q.Length == 0 ||
-             s.FullName.Contains(q, StringComparison.OrdinalIgnoreCase) ||
-             s.StudentId.Contains(q, StringComparison.OrdinalIgnoreCase)));
+        {
+            var course = (s.Course ?? "").Trim();
+
+            bool matchesProgram =
+                SelectedProgram == "All" ||
+                string.Equals(
+                    course,
+                    SelectedProgram?.Trim(),
+                    StringComparison.OrdinalIgnoreCase
+                );
+
+            bool matchesSearch =
+                string.IsNullOrWhiteSpace(q) ||
+                (s.FullName ?? "").Contains(
+                    q,
+                    StringComparison.OrdinalIgnoreCase
+                ) ||
+                (s.StudentId ?? "").Contains(
+                    q,
+                    StringComparison.OrdinalIgnoreCase
+                );
+
+            return matchesProgram && matchesSearch;
+        });
 
         Students.Clear();
-        foreach (var s in result) Students.Add(s);
+
+        foreach (var student in result)
+        {
+            Students.Add(student);
+        }
     }
+
 }

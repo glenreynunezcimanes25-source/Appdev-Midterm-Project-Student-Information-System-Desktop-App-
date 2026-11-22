@@ -1,4 +1,6 @@
 <Solution>
-  <Project Path="../SIS.Mobile/SIS.Mobile/SIS.Mobile.csproj" />
+  <Project Path="../SIS.Mobile/SIS.Mobile/SIS.Mobile.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
   <Project Path="Student_Information_System.csproj" />
 </Solution>

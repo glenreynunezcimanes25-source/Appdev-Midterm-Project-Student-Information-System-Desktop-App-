@@ -1,3 +1,4 @@
+
 using Microsoft.Extensions.Logging;
 using SIS.Mobile.Services;
 using SIS.Mobile.ViewModels;
@@ -10,6 +11,7 @@ public static class MauiProgram
     public static MauiApp CreateMauiApp()
     {
         var builder = MauiApp.CreateBuilder();
+
         builder
             .UseMauiApp<App>()
             .ConfigureFonts(fonts =>
@@ -18,8 +20,10 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        // Swap MockStudentService for MySqlStudentService when MySQL is ready
+        // Register MySQL student service
         builder.Services.AddSingleton<IStudentService, MySqlStudentService>();
+
+        // Register application components
         builder.Services.AddTransient<DirectoryViewModel>();
         builder.Services.AddTransient<DirectoryPage>();
 
