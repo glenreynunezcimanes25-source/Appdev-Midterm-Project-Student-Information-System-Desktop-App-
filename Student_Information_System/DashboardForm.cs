@@ -205,7 +205,9 @@ namespace Student_Information_System
 
             valueLabel.Text = "0";
             valueLabel.ForeColor = ColorTranslator.FromHtml("#1F2937");
-            valueLabel.Font = new Font("Segoe UI", 19, FontStyle.Bold);
+            valueLabel.Font = caption == "TOP PROGRAM"
+                ? new Font("Segoe UI", 12, FontStyle.Bold)
+                : new Font("Segoe UI", 19, FontStyle.Bold);
             valueLabel.AutoSize = true;
             valueLabel.Location = new Point(18, 42);
 
@@ -421,7 +423,7 @@ namespace Student_Information_System
 
             plotYear.Plot.Axes.Bottom.SetTicks(
                 positions,
-                data.Select(x => x.Name).ToArray());
+                data.Select(x => x.Name ?? "Unknown").ToArray());
 
             plotYear.Plot.Axes.Bottom.Label.Text = "Year Level";
             plotYear.Plot.Axes.Left.Label.Text = "Number of Students";
@@ -455,6 +457,11 @@ namespace Student_Information_System
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
             }
+        }
+
+        private void DashboardForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
